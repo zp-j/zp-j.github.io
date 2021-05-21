@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>Golang何时该使用指针 | Ox333333</title><meta name="description" content="This post summarizes the situation of using pointer in Golang."><meta name="keywords" content="Golang, pointer"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="Golang何时该使用指针"><meta name="og:descricption" content="This post summarizes the situation of using pointer in Golang."><meta name="og:url" content="https://zpjiang.me/2016/08/22/when-to-use-pointer-in-golang/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Golang何时该使用指针"><meta name="twitter:description" content="This post summarizes the situation of using pointer in Golang."><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url" content="https://zpjiang.me/2016/08/22/when-to-use-pointer-in-golang/"><link rel="canonical" href="https://zpjiang.me/2016/08/22/when-to-use-pointer-in-golang/"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Golang何时该使用指针</h1><div class="post-info">Aug 22, 2016</div><div class="post-content"><blockquote>
+<p>本文翻译自 <a target="_blank" rel="noopener" href="https://github.com/golang/go/wiki/CodeReviewComments#receiver-type">Go Code Review Comments</a></p>
+</blockquote>
+<p>一个函数何时该用指针类型做receiver对初学者而言一直是个头疼的问题。如果不知道该如何取舍，选择指针类型的receiver。但有些时候value receiver更加合适，比如对象是一些轻量级的不变的structs，使用value receiver会更加高效。下面是列举了一些常用的判断指导。</p>
+<span id="more"></span>
+<ul>
+<li><p>如果receiver是<code>map</code>、<code>func</code>或者<code>chan</code>，不要使用指针</p>
+</li>
+<li><p>如果receiver是<code>slice</code>并且该函数并不会修改此slice，不要使用指针</p>
+</li>
+<li><p>如果该函数会修改receiver，此时一定要用指针</p>
+</li>
+<li><p>如果receiver是<code>struct</code>并且包含互斥类型<code>sync.Mutex</code>，或者是类似的同步变量，receiver必须是指针，这样可以避免对象拷贝</p>
+</li>
+<li><p>如果receiver是较大的<code>struct</code>或者<code>array</code>，使用指针则更加高效。多大才算大？假设struct内所有成员都要作为函数变量传进去，如果觉得这时数据太多，就是struct太大</p>
+</li>
+<li><p>如果receiver是<code>struct</code>，<code>array</code>或者<code>slice</code>，并且其中某个element指向了某个可变量，则这个时候receiver选指针会使代码的意图更加明显</p>
+</li>
+<li><p>如果receiver使较小的<code>struct</code>或者<code>array</code>，并且其变量都是些不变量、常量，例如<code>time.Time</code>，value receiver更加适合，因为value receiver可以减少需要回收的垃圾量。</p>
+</li>
+<li><p><strong>最后，如果不确定用哪个，使用指针类的receiver</strong></p>
+</li>
+</ul>
+</div></article></div></section><footer><div class="paginator"><a href="/2016/08/30/CMD-vs-ENTRYPOINT-and-COPY-vs-ADD/" class="prev">上一篇</a><a href="/2016/08/18/get-started-with-docker-swarm/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2016/08/22/when-to-use-pointer-in-golang/';
+var disqus_title = 'Golang何时该使用指针';
+var disqus_url = 'http://zpjiang.me/2016/08/22/when-to-use-pointer-in-golang/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>

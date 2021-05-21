@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="zh-cmn-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>Facebook 北美地区 E3 到 E8 程序员薪水分析 | Ox333333</title><meta name="description" content="根据2017年至2020年近700+数据点，全面分析Facebook北美地区从E3到E8程序员薪水分布、薪酬涨幅、地区差异等。"><meta name="keywords" content="北美, Facebook, 脸书, 程序员, 薪水"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="Facebook 北美地区 E3 到 E8 程序员薪水分析"><meta name="og:descricption" content="根据2017年至2020年近700+数据点，全面分析Facebook北美地区从E3到E8程序员薪水分布、薪酬涨幅、地区差异等。"><meta name="og:url" content="https://zpjiang.me/2020/02/04/fb-eng-comp/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Facebook 北美地区 E3 到 E8 程序员薪水分析"><meta name="twitter:description" content="根据2017年至2020年近700+数据点，全面分析Facebook北美地区从E3到E8程序员薪水分布、薪酬涨幅、地区差异等。"><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url" content="https://zpjiang.me/2020/02/04/fb-eng-comp/"><link rel="canonical" href="https://zpjiang.me/2020/02/04/fb-eng-comp/"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Facebook 北美地区 E3 到 E8 程序员薪水分析</h1><div class="post-info">Feb 4, 2020</div><div class="post-content"><p>前一篇 <a href="/2020/02/03/eng-comp-level/">湾区大厂程序员薪水构成、level 和对应期望</a>，介绍了硅谷几座大厂程序员薪水的基本构成和每个 level 的对应职责。这一篇，我们利用 <a target="_blank" rel="noopener" href="https://levels.fyi">levels.fyi</a> 的公开数据（包含了从 2017 年到 2020 年各大科技公司、各类职位、各个 level 的收入数据），就脸书 FB 从 E3 到 E8 程序员的年收入 TC (Total Compensation) 做一些分析。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_hq.jpg" alt="Facebook logo in front of its headquarter."></p>
+<span id="more"></span>
+<blockquote>
+<p><a href="/2020/02/04/fb-eng-comp/#数据说明">数据说明</a><br><a href="/2020/02/04/fb-eng-comp/#FB-程序员到底赚多少钱">FB 程序员到底赚多少钱</a><br><a href="/2020/02/04/fb-eng-comp/#收入-vs-地区">收入 vs. 地区</a><br><a href="/2020/02/04/fb-eng-comp/#收入-vs-时间">收入 vs. 时间</a><br><a href="/2020/02/04/fb-eng-comp/#基本工资-vs-年终奖-vs-股票">基本工资 vs. 年终奖 vs. 股票</a><br><a href="/2020/02/04/fb-eng-comp/#收入-vs-性别">收入 vs. 性别</a></p>
+</blockquote>
+<h2 id="数据说明"><a href="#数据说明" class="headerlink" title="数据说明"></a>数据说明</h2><ul>
+<li>数据仅限 FB 北美地区的 Software Engineer 职位，约 700 个数据点</li>
+<li>数据金额单位为千刀，比如，下图 E3 中位数 170 千刀，即 17 万刀</li>
+<li>数据覆盖 2017 年到 2020 年，考虑每年市场价上升的趋势和股票上涨，大家现在的实际收入会比下面的数据稍高</li>
+<li>所有图表均为作者通过 <a target="_blank" rel="noopener" href="https://observablehq.com/">Observable</a> 绘制，<strong>转载请<a href="/2020/02/04/fb-eng-comp/#小结">公众号</a>留言</strong></li>
+</ul>
+<h2 id="FB-程序员到底赚多少钱"><a href="#FB-程序员到底赚多少钱" class="headerlink" title="FB 程序员到底赚多少钱"></a>FB 程序员到底赚多少钱</h2><p><strong>图 1: 各 level 的收入四分位图</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_level_box.png" alt="TC by software engineer level."></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">#</th>
+<th style="text-align:center">E3</th>
+<th style="text-align:center">E4</th>
+<th style="text-align:center">E5</th>
+<th style="text-align:center">E6</th>
+<th style="text-align:center">E7</th>
+<th style="text-align:center">E8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">p75</td>
+<td style="text-align:center">186</td>
+<td style="text-align:center">265</td>
+<td style="text-align:center">400</td>
+<td style="text-align:center">600</td>
+<td style="text-align:center">950</td>
+<td style="text-align:center">1450</td>
+</tr>
+<tr>
+<td style="text-align:center">p50</td>
+<td style="text-align:center">170</td>
+<td style="text-align:center">250</td>
+<td style="text-align:center">362</td>
+<td style="text-align:center">520</td>
+<td style="text-align:center">850</td>
+<td style="text-align:center">1450</td>
+</tr>
+<tr>
+<td style="text-align:center">p25</td>
+<td style="text-align:center">162</td>
+<td style="text-align:center">227</td>
+<td style="text-align:center">333</td>
+<td style="text-align:center">488</td>
+<td style="text-align:center">723</td>
+<td style="text-align:center">990</td>
+</tr>
+</tbody>
+</table>
+<p><strong>图 2: 各 level 的收入分布范围</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_level.png" alt="TC by software engineer level."></p>
+<ul>
+<li>颜色越深代表数据点重合得越多</li>
+<li>低 level 数据点较多，更具有代表性；高 level 数据点较少，参考价值较小</li>
+<li>E3/E4/E5 的收入范围重合部分较多，主要原因是：<ul>
+<li>北美各地区同 level 收入差异明显，可能奥斯汀的 E5 收入跟湾区 E4 差不多</li>
+<li>低 level 从 Ln 升职到 Ln+1 涨幅不大，外面跳槽进 Ln+1 negotiate 可以拿到 Ln+1 range 的 high end</li>
+</ul>
+</li>
+<li>E6/E7/E8 收入范围很宽，主要原因有：<ul>
+<li>数据点较少</li>
+<li>E6+ 的程序员工作资历久，这几年科技公司股票疯长，几年下来收入差距越来越明显</li>
+</ul>
+</li>
+</ul>
+<h2 id="收入-vs-地区"><a href="#收入-vs-地区" class="headerlink" title="收入 vs. 地区"></a>收入 vs. 地区</h2><p>北美程序员主要集中在三蕃湾区、西雅图和纽约，这三个地方程序员收入水平较高，相比之下，奥斯汀、波士顿、洛杉矶、匹兹堡等地区则收入稍低。如上面分析，这种现象导致的问题是每个 level 的 range 过大，波士顿的 E5 可能只相当于湾区 E4 的 p75。</p>
+<p>考虑到冷门城市数据点较少，我们就着重看看纽约（501）、三蕃（807）和西雅图（819）地区的收入分布。</p>
+<p><strong>图 3: 纽约、三蕃和西雅图地区的各 level 收入分布</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_dma.png" alt="TC by software engineer level by dma."></p>
+<p><img style="width: 90%" src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_level_dma.png" alt="TC by software engineer level by dma."></p>
+
+<ul>
+<li>三种颜色分别代表 <span style="color: #5579a4;"><strong>纽约地区</strong></span>，<span style="color: #e68a39"><strong>三蕃-奥克兰-圣何塞</strong></span> 和 <span style="color: #d45f5b"><strong>西雅图-塔科马地区</strong></span>。</li>
+<li>相比于纽约和西雅图，三蕃湾区每个 level 都有特别大包裹的 outliers<ul>
+<li>湾区大牛多</li>
+<li>湾区科技公司多，竞争更加激烈，各公司为了抢人会破例开出大包裹</li>
+</ul>
+</li>
+<li>三蕃湾区数据点最多、西雅图其次、纽约较少<ul>
+<li>湾区“硅谷”名副其实</li>
+<li>西雅图免州税，而加州和纽约苛捐杂税都很高，所以还是有不少人选择西雅图</li>
+</ul>
+</li>
+<li>每个 level 的 range 三蕃湾区最大，西雅图其次，纽约较小<ul>
+<li>程序员基数大，各种水平的人数都不少</li>
+<li>三蕃竞争激烈，找工作谈薪水讨价还价空间更大</li>
+</ul>
+</li>
+</ul>
+<h2 id="收入-vs-时间"><a href="#收入-vs-时间" class="headerlink" title="收入 vs. 时间"></a>收入 vs. 时间</h2><p><strong>图 4: 近三年各 level 收入中位数</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_year.png" alt="TC by software engineer level by dma."></p>
+<ul>
+<li>三种颜色分别代表 <span style="color: #5579a4;"><strong>2018 年</strong></span>，<span style="color: #e68a39"><strong>2019 年</strong></span> 和 <span style="color: #d45f5b"><strong>2020 年</strong></span></li>
+<li>这三年 E3/E4/E5 收入基本持平，E6/E7 稳中有涨<ul>
+<li>最近几年程序员行业确实不及 14/15 年那么火爆，从湾区的房市也可见一斑</li>
+<li>高 level 程序员涨势不错，猜测是因为持有股票较多，TC 跟着股票一起涨</li>
+</ul>
+</li>
+</ul>
+<h2 id="基本工资-vs-年终奖-vs-股票"><a href="#基本工资-vs-年终奖-vs-股票" class="headerlink" title="基本工资 vs. 年终奖 vs. 股票"></a>基本工资 vs. 年终奖 vs. 股票</h2><p><strong>图 5: TC 中的基本工资、年终奖、股票组成</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_base_bonus_stock.png" alt="TC composition by software engineer level."></p>
+<ul>
+<li>不论 level，基本工资（base）涨幅更趋线性，每升一级涨两三万</li>
+<li>年终奖（bonus）跟基本工资正相关，基本工资的 10% 到 30%，level 越高 target bonus ratio 也越高，计算公式参考 <a href="/2020/02/03/eng-comp-level/#薪水构成">薪水构成</a></li>
+<li>股票（RSU）才是影响 TC 中的关键因素，E3/E4 股票收入占比较小，但 E5+ 股票逐步成为收入的主要部分<ul>
+<li>level 越高，个人对公司战略方向的影响越大，收入与公司表现绑定更紧密</li>
+<li>level 越高，公司表现对个人收入影响也越大，这些人更自然地会从大局出发，捍卫公司利益</li>
+<li>猜想 1：level 越低，股票收入越少，公司表现对其影响也较小，所以跳槽率较高？（LinkedIn 的 DS 应该有这些数据做相关分析）</li>
+<li>猜想 2：level 越高，对公司粘性越高，如果公司股票业绩不错，跳槽率相应较小？<ul>
+<li>猜想：年纪越大，跳槽的意愿应该会越低，因为换一个陌生环境从头开始的成本更高</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="收入-vs-性别"><a href="#收入-vs-性别" class="headerlink" title="收入 vs. 性别"></a>收入 vs. 性别</h2><p>看了各个 level、地区的收入情况，那么 FB 的 diversity 做得怎么样呢？据 FB 2019 年的 diversity report，技术岗，女性占比 23%。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_gender.png" alt="FB tech position gender percentage."></p>
+<p>然而，在我们从 levels.fyi 收集的数据中，女性数据占比仅为 10% 左右，以下图表可能会因为数据点偏少而不准确。</p>
+<p><strong>图 6: 各 level 不同性别收入情况</strong></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_fb_tc_gender.png" alt="TC composition by software engineer level and gender."></p>
+<ul>
+<li>仅从上图看，E3~E5 女性收入均比男性稍稍低一些</li>
+<li>E6 女性收入稍高，而 E7 女性收入低不少，我更倾向于认为是数据点偏少造成的</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>作为北美数一数二的大科技公司，FB 给程序员的包裹还是非常慷慨大方的，<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Household_income_in_the_United_States">美国 2019 年家庭年收入中位数为 $63,688</a>（加州 $71,805，纽约 $64,894），就算是刚刚毕业的本科/硕士，拿到的 E3 中位数也有 $170,000，再加上公司各种各样的诱人福利，科技行业的待遇好毋庸置疑！</p>
+<p>当然，一切脱离具体情况讨论收入的行为都是耍流氓。考虑到三蕃、纽约高昂的生活成本，日益拥堵的上下班交通，看病、买房、人工服务、小孩上学、吃饭，等等，这里面每一样都不便宜。在湾区待了这么多年，周围的朋友 come and go，每个人对生活的追求很不一样。</p>
+<p>说了这么多，希望文中提供的信息能对正在找工作、跳槽、考虑来三蕃/纽约/西雅图甚至是美国的小伙伴有点帮助。有什么问题，欢迎在文末评论区留言，或者关注公众号<strong><a target="_blank" rel="noopener" href="https://blog.1pixel.cc/">湾区搬砖先生</a></strong>。</p>
+<p><br>  <img
+    src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_wechat_qr_code.png"
+    alt="微信公众号： 湾区搬砖先生"
+    style="margin: 0; width: 280px;"><br></p>
+
+<h2 id="Disclaimer"><a href="#Disclaimer" class="headerlink" title="Disclaimer"></a>Disclaimer</h2><ul>
+<li>所有数据来源于网络<a target="_blank" rel="noopener" href="https://levels.fyi">公开内容</a>，准确性请读者自行判断</li>
+<li>以上所有内容均为作者个人观点，与作者所在公司及其他组织无关</li>
+</ul>
+</div></article></div></section><footer><div class="paginator"><a href="/2020/03/14/rvo-static-variable/" class="prev">上一篇</a><a href="/2020/02/03/eng-comp-level/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2020/02/04/fb-eng-comp/';
+var disqus_title = 'Facebook 北美地区 E3 到 E8 程序员薪水分析';
+var disqus_url = 'http://zpjiang.me/2020/02/04/fb-eng-comp/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>

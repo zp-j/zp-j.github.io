@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>Apache Kafka - Log Aggregation | Ox333333</title><meta name="description" content="A log aggregation example with apache kafka"><meta name="keywords"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="Apache Kafka - Log Aggregation"><meta name="og:descricption" content="A log aggregation example with apache kafka"><meta name="og:url"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Apache Kafka - Log Aggregation"><meta name="twitter:description" content="A log aggregation example with apache kafka"><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url"><link rel="canonical"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Apache Kafka - Log Aggregation</h1><div class="post-info">Dec 6, 2015</div><div class="post-content"><h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>node1</th>
+<th>node2</th>
+<th>node3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Server</td>
+<td>Producer</td>
+<td>Consumer</td>
+</tr>
+<tr>
+<td><strong>Mem</strong></td>
+<td>2048 MB</td>
+<td>2048 MB</td>
+<td>2048 MB</td>
+</tr>
+<tr>
+<td><strong>OS</strong></td>
+<td>Ubuntu 14.04 64</td>
+<td>Ubuntu 14.04 64</td>
+<td>Ubuntu 14.04 64</td>
+</tr>
+<tr>
+<td><strong>Public IP</strong></td>
+<td>121.40.83.134</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Internal IP</strong></td>
+<td>192.168.6.18</td>
+<td>192.168.6.15</td>
+<td>192.168.6.16</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<span id="more"></span>
+<p>Apache Kafka: <a target="_blank" rel="noopener" href="http://kafka.apache.org/downloads.html">kafka_2.11-0.8.2.2.tgz</a></p>
+<h2 id="Roles"><a href="#Roles" class="headerlink" title="Roles"></a>Roles</h2><p><img src="http://kafka.apache.org/images/producer_consumer.png" alt="img"></p>
+<ul>
+<li>node1: Kafka cluster</li>
+<li>node2: Producer</li>
+<li>node3: Comsumer</li>
+</ul>
+<h2 id="Launch"><a href="#Launch" class="headerlink" title="Launch"></a>Launch</h2><h3 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h3><p>Download kafka_2.11-0.8.2.2.tgz and extract to each node.</p>
+<pre><code>scp kafka_2.11-0.8.2.2.tgz [user]@[node]:[path]
+tar xvzf kafka_2.11-0.8.2.2.tgz
+</code></pre><h3 id="Start-Kafka-Server"><a href="#Start-Kafka-Server" class="headerlink" title="Start Kafka Server"></a>Start Kafka Server</h3><p><strong>Note</strong></p>
+<p>If you don’t have Zoopkeeper running in your cluster, don’t forget to lauch Zoopkeeper before starting Kafka server.</p>
+<pre><code># In the root directory of Kafka
+./bin/zookeeper-server-start.sh config/zookeeper.properties
+</code></pre><p>Launch Kafka server in node1</p>
+<pre><code>./bin/kafka-server-start.sh ./config/server.properties
+</code></pre><p>You can check the status of the default port for Kafka Server</p>
+<pre><code>netstat -npl 9092
+</code></pre><h3 id="Setup-Producer"><a href="#Setup-Producer" class="headerlink" title="Setup Producer"></a>Setup Producer</h3><p>I developed a simple log generator web service with Node.js, you can clone the repo for a quick demo.</p>
+<pre><code>git clone https://github.com/HaohanStacks/haohan_data_producer.git generator &amp;&amp; cd generator
+npm i &amp;&amp; npm start
+</code></pre><p>For more details about this repo, please check the document here: <a target="_blank" rel="noopener" href="https://github.com/HaohanStacks/haohan_data_producer">https://github.com/HaohanStacks/haohan_data_producer</a>.</p>
+<p>In node2, logs will be generated in <code>./generator/logs/access.log</code>. Now we need to send this log content to Kafka Server.</p>
+<pre><code>tail -n 0 -f ../haohan_data_producer/logs/access.log | bin/kafka-console-producer.sh --broker-list 192.168.6.18:9092 --topic haohan
+</code></pre><p>Pay attention to the path of log file and binary files. <code>192.168.6.18</code> is node1’s ip address, <code>haohan</code> is the topic of this producer. Now we have pushed logs to Kafka Server.</p>
+<h3 id="Setup-Comsumer"><a href="#Setup-Comsumer" class="headerlink" title="Setup Comsumer"></a>Setup Comsumer</h3><p>In node3, go to the root directory of Kafka</p>
+<pre><code>bin/kafka-console-consumer.sh --zookeeper 192.168.6.18:2181 --topic haohan --from-beginning
+</code></pre><p><code>2181</code> is the default port for zookeeper, pay attention to the topic name, it should be the same as what you have named when you setup the producer in node2.</p>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><p>Open another terminal, send http request to your web service (This web service is launched by Node.js, the default port is 3000).</p>
+<pre><code>curl 192.168.6.15:3000
+</code></pre><p>And voilà, in node3 you will see the received log text. :D</p>
+<!-- ## Requirements:
+
+- gcc
+- make
+
+## Download
+
+Download PostgreSQL from its official download page: [http://www.postgresql.org/download/](http://www.postgresql.org/download/).
+
+## Compile and Install
+
+## Run
+
+```
+postgres@node1:/usr/local/postgresql/bin$ ./pg_ctl start -D ../data/
+./psql
+``` -->
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/10/install-mysql-and-allow-remote-access/" class="prev">上一篇</a><a href="/2015/10/20/thoughts-open-source-project/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2015/12/06/apache-kafka-log-aggregation/';
+var disqus_title = 'Apache Kafka - Log Aggregation';
+var disqus_url = 'http://zpjiang.me/2015/12/06/apache-kafka-log-aggregation/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>

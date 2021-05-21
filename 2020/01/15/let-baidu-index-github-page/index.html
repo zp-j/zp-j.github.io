@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-cmn-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>解决百度爬虫无法爬取 Github Pages 个人博客的问题 | Ox333333</title><meta name="description" content="这篇文章提供了一个简单免费的解决方案，可以让百度爬虫成功抓取并收录基于 Github Page 搭建的个人博客。"><meta name="keywords" content="百度, 爬虫, Github, 博客, SEO, zeit, CDN, DNS"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="解决百度爬虫无法爬取 Github Pages 个人博客的问题"><meta name="og:descricption" content="这篇文章提供了一个简单免费的解决方案，可以让百度爬虫成功抓取并收录基于 Github Page 搭建的个人博客。"><meta name="og:url" content="https://zpjiang.me/2020/01/15/let-baidu-index-github-page/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="解决百度爬虫无法爬取 Github Pages 个人博客的问题"><meta name="twitter:description" content="这篇文章提供了一个简单免费的解决方案，可以让百度爬虫成功抓取并收录基于 Github Page 搭建的个人博客。"><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url" content="https://zpjiang.me/2020/01/15/let-baidu-index-github-page/"><link rel="canonical" href="https://zpjiang.me/2020/01/15/let-baidu-index-github-page/"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">解决百度爬虫无法爬取 Github Pages 个人博客的问题</h1><div class="post-info">Jan 15, 2020</div><div class="post-content"><p>据 <a target="_blank" rel="noopener" href="https://www.marketmechina.com/baidu-search-engine-market-share-in-china-dec-2019/">marketmechina</a> 统计，去年12月份中国市场全平台 （桌面+手机客户端）搜索引擎市场份额：</p>
+<ul>
+<li>百度: 67.09%</li>
+<li>搜狗: 18.75%</li>
+<li>神马: 6.84%</li>
+<li>谷歌: 2.64%</li>
+<li>必应: 2.6%</li>
+<li>其它: 2.08%</li>
+</ul>
+<p>不得不说，即使大家现在如此 diss 百度，这中文搜索的第一把交椅，百度还是坐的很稳。想要获得中文搜索的流量，百度这一入口不容忽视。</p>
+<span id="more"></span>
+<h2 id="GitHub-Pages-个人博客"><a href="#GitHub-Pages-个人博客" class="headerlink" title="GitHub Pages 个人博客"></a>GitHub Pages 个人博客</h2><p>Github Pages 这项服务自上线后，很快就成为了程序员搭建静态个人博客的最佳之选，大家喜欢的原因有很多，比如</p>
+<ul>
+<li>可以像写 code 一样写文章</li>
+<li>可以通过命令行 git push 一键发布网站，酷炫 😎</li>
+<li>静态网页生成框架选择众多，插件完善，自定义性很高</li>
+<li>如果懂点前端，上手非常容易</li>
+</ul>
+<p>更不用提版本追踪、多人协作这些 Git 自带的优势了。2013年，我也是用 Jekyll 在 GitHub Pages 上搭了个人第一个博客。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_blog.png" alt="First blog screenshot"></p>
+<h2 id="百度爬虫被拒绝访问"><a href="#百度爬虫被拒绝访问" class="headerlink" title="百度爬虫被拒绝访问"></a>百度爬虫被拒绝访问</h2><p>然而，2015年，因为一些不能细说的原因，Github 开始拒绝百度爬虫的访问，直接返回 403。</p>
+<p>官方给出原因是，百度爬虫爬得太狠，影响了 Github Page 服务的正常使用。这就导致了，但凡在 Github Page 搭建的个人博客，都无法被百度收录。</p>
+<p>自去年年底佛罗里达之行回来，我开始写中文游记，目前为止，Google 收录非常及时全面，SEO 效果也很不错。但如果只有国外的中文读者可以搜索到这些文章，那国内这最大的一批中文读者就被忽略了，再好的内容无法被分享出去也是白搭。</p>
+<p>于是，我开始捣鼓如何让百度爬虫收录我的个人博客。</p>
+<h2 id="CDN-解决不了问题"><a href="#CDN-解决不了问题" class="headerlink" title="CDN 解决不了问题"></a>CDN 解决不了问题</h2><p>我在网上粗略搜了一番，不少人提到 CDN，然而，CDN 无法完美解决问题，尤其对小流量的个人博客。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cloudflare.com/learning/cdn/what-is-a-cdn/" title="What is CDN?">传送门：什么是 CDN</a>。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/hexo_img/master/cdn-ntt-com2.jpg" alt="CDN structure"></p>
+<p><strong>先说结论，CDN 无法完美解决问题，尤其对小流量的个人博客。</strong></p>
+<p>原理上来讲，CDN 解决了最后一公里的资源分发，如果国内的 CDN 服务器有博客的静态文件，那百度爬虫访问时直接从 CDN 节点上爬取资源，Github 源站拒绝访问的问题自然就不存在了。</p>
+<p>但是，问题就出在 CDN 节点上。第一次访问时，CDN 上的缓存还未建立，爬虫的请求会被转发到 Github 源站，由于转发请求默认携带了百度爬虫的UA 还有原始 IP，GitHub 发现后会直接拒绝。</p>
+<p>有些人会说，国内有些 CDN 厂商支持主动缓存预热（老本行 😂），但缓存是有失效时间的，expired 之后，照样得回源。对于流量小的个人博客，想让资源一直缓存在 CDN 节点上，不现实，新写的文章怎么发布？修改的文章怎么更新？</p>
+<p>当然，如果 CDN 节点回源时能够不带上客户端 User Agent，Github 便认不出这是正常访问还是百度爬虫了。这个方法是可行的，很多人提到了用 Nginx 反向代理，然后 override forward IP，这确实可以糊弄过去。只不过，这些方法都需要一定的定制能力，如果是个人开发者，还得买一台 VPS 或者云服务器。</p>
+<h2 id="Coding-Pages-做镜像站"><a href="#Coding-Pages-做镜像站" class="headerlink" title="Coding Pages 做镜像站"></a>Coding Pages 做镜像站</h2><p>国内 coding.net 现在也有了类似于 GitHub Pages 的服务：Coding Pages。</p>
+<p>在博客静态文件 repo 的配置中同时加上 Github 和 coding.net 的 remote 地址，这样一键发布，两地更新。加上域名智能解析，对于国内的请求，转发到 Coding Page 即可。</p>
+<p>可惜的是，现在 <em>.coding.me 和 </em>.coding.io 访问时会先出现跳转页面，导致百度爬虫无法正常收录。</p>
+<h2 id="有没有简单、可靠还免费的方法？"><a href="#有没有简单、可靠还免费的方法？" class="headerlink" title="有没有简单、可靠还免费的方法？"></a>有没有简单、可靠还免费的方法？</h2><p>答案是，有！</p>
+<p>前段时间逛 Twitter，看到大神 <a target="_blank" rel="noopener" href="https://twitter.com/rauchg">Guillermo Rauch</a> 的一篇文章 <a target="_blank" rel="noopener" href="https://rauchg.com/2020/2019-in-review">2019 in Review</a>，顺便就去看了他们创业正在做的产品，zeit.co，提供的正是免费的静态资源 hosting 服务。</p>
+<p>抱着试试的心态，我跟着官网文档，不到十分钟就配完了，用百度爬虫一抓，200！</p>
+<p>写这篇博客的时候刚好一周，从百度站长上看，文章正在慢慢被收录。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_baidu_index_status.png" alt="baidu index status"></p>
+<p>其实 zeit.co 的原理跟上述几个思路类似，本质上他们提供了 Storage + CDN + DNS 这一套完整服务。根据他们的文档，整个过程我只需要：</p>
+<ul>
+<li>用我的 Github 账户登陆，给了 zeit 我的静态网页 repo 的 read 权限</li>
+<li>等几秒，importing</li>
+<li>部署成功！</li>
+</ul>
+<p>不用写任何 code，点两下鼠标就完事了。部署完成后，会生成一个类似于 xxxxxxx.now.sh 的链接，点击即可访问，静态资源已经部署到了他们的边缘 CDN 节点上。</p>
+<p>到了这一步，接下来需要做的就是切换域名，通过智能 DNS 把国内流量切过去。</p>
+<p>不过，为了省事，我决定直接放弃 GitHub Page 提供的 CDN 功能，原本的一套技术栈是 GitHub + GitHub Pages（Fastly CDN）+ Default DNS，如果 zeit 能够提供足够智能的 CDN 和 DNS 服务，没有必要中间套两层 CDN，新的技术栈变成了 GitHub + zeit Smart CDN + zeit Smart DNS。一旦有新的文件 submit 到 GitHub，zeit 就能自动触发更新，这跟 GitHub Pages 是一样的。</p>
+<p>于是，我把自定义域名到 Github Page 的 CNAME 记录，换成 zeit.co 提供的 TXT 和 CNAME 记录（TXT记录用来验证）。</p>
+<p>后来，我发现更好的做法是，直接用 zeit 提供的 nameserver 智能 DNS，测下来解析比域名自带的免费 DNS 效果还要好。下图是他们的 CDN 节点分布，中国附近台湾和香港都有节点，国内访问应该速度不会太慢。</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_zeit_cdn.png" alt="zeit cdn nodes"></p>
+<p>除了以上提到的这些，zeit 还提供了一些小 feature，比如免费的 HTTPS，基本GitHub Pages 有的 zeit 都有。对于免费用户，每个月流量限额是20G，这点对我来说已经远够用了。</p>
+<p><strong>Disclamer: 我没有收 zeit 任何推广费，纯粹是慕大神之名而来。</strong><br><strong>PS: 百度站长里 sitemap 提交了快一周，才收录了 11 篇文章，这速度真是慢。</strong></p>
+</div></article></div></section><footer><div class="paginator"><a href="/2020/01/20/const-reference-vs-pointer/" class="prev">上一篇</a><a href="/2020/01/12/git-mv/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2020/01/15/let-baidu-index-github-page/';
+var disqus_title = '解决百度爬虫无法爬取 Github Pages 个人博客的问题';
+var disqus_url = 'http://zpjiang.me/2020/01/15/let-baidu-index-github-page/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>

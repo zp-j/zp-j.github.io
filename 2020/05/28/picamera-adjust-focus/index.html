@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>Adjust Raspberry Pi camera focus to fix the blurry issue | Ox333333</title><meta name="description" content="The image taken by Raspberry Pi camera is blurry because the default focus point is too far, this can be fixed by adjusting the lens position."><meta name="keywords" content="Raspberry Pi, PiCamera, Camera, Lens, Focus, DIY, Python, Blurry Image"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="Adjust Raspberry Pi camera focus to fix the blurry issue"><meta name="og:descricption" content="The image taken by Raspberry Pi camera is blurry because the default focus point is too far, this can be fixed by adjusting the lens position."><meta name="og:url" content="https://zpjiang.me/2020/05/28/picamera-adjust-focus/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Adjust Raspberry Pi camera focus to fix the blurry issue"><meta name="twitter:description" content="The image taken by Raspberry Pi camera is blurry because the default focus point is too far, this can be fixed by adjusting the lens position."><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url" content="https://zpjiang.me/2020/05/28/picamera-adjust-focus/"><link rel="canonical" href="https://zpjiang.me/2020/05/28/picamera-adjust-focus/"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Adjust Raspberry Pi camera focus to fix the blurry issue</h1><div class="post-info">May 28, 2020</div><div class="post-content"><script>
+MathJax = { tex: { tags: 'all' } };
+</script>
+
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera2.jpeg" alt="Raspberry Pi Camera"></p>
+<p>Device: <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/">Raspberry Pi 3 B+</a><br>Camera: <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/products/camera-module-v2/">Raspberry Pi Camera v2.1</a></p>
+<p>I tried to use a Raspberry Pi to shoot a timelapse, to record the growth of my baby tangerine.</p>
+<p>However, after checking the first pilot, the tangerine plant is pretty blurry, the camera was focusing on somewhere far away but not the plant, like the floor in the background is clear. </p>
+<span id="more"></span>
+<p>I don’t expect the camera to be smart enough to auto-focus on an object for the price that I paid, but I’m wondering if there’s anything that we can tweak to improve it.</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_baby_tangerine.png" alt="Baby tangerine under Raspberry Pi Camera"></p>
+<h2 id="How-to-adjust-Raspberry-Pi-Camera’s-focus"><a href="#How-to-adjust-Raspberry-Pi-Camera’s-focus" class="headerlink" title="How to adjust Raspberry Pi Camera’s focus?"></a>How to adjust Raspberry Pi Camera’s focus?</h2><p>The standard Pi Camera is a fixed-focus lens, it’s not like a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Zoom_lens">zoom lens</a>. However, the lens base is like a screw in a nut. You can <strong>adjust the lens focus by tightening or loosening the lens base</strong>, amazing! </p>
+<p>There are some <a target="_blank" rel="noopener" href="https://projects.raspberrypi.org/en/projects/infrared-bird-box/6">posts</a> talking about it. What surprises me is people are so smart that they can find the workaround, it doesn’t look like an official solution by design.</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera.jpeg" alt="Raspberry Pi Camera Lens Base"></p>
+<p>If you look closer at the double arrow, you can use a small tweezer to rotate it.</p>
+<h2 id="How-does-it-work"><a href="#How-does-it-work" class="headerlink" title="How does it work?"></a>How does it work?</h2><p>To simplify the structure, here’s the sketch of the camera. The sensor is at the bottom, the lens is on top. When you rotate the lens base, the height is changed, which then changes the internal lens position so that it can focus on a different distance.</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_diagram.png" alt="Raspberry Pi Camera Sketch"></p>
+<p>Now let’s see how different lens positions can change the focus position. </p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_diagram2.png" alt="Raspberry Pi Camera Sketch"></p>
+<ul>
+<li><code>v</code>: the image distance, between sensor and lens</li>
+<li><code>u</code>: the object distance, between lens and object</li>
+</ul>
+<p>In the above two cases, when you tighten the lens base clockwise, <code>v</code> decreases, vice versa. When the lens base moves to the left, the focus point moves too, <strong>but in a different direction</strong>. So in my case, if I want to move the focus point from floor to my plant, I should actually increase <code>v</code>, to rotate the camera base out a little bit.</p>
+<p>Why?</p>
+<p>Let’s look at the <a target="_blank" rel="noopener" href="http://hyperphysics.phy-astr.gsu.edu/hbase/geoopt/lenseq.html">Lens Formula</a>:</p>
+<p>$${1 \over v} + {1 \over u} = {1 \over f}$$</p>
+<p>The <code>f</code> is the focal length, it’s a constant value that determined by the lens. So, the right side of the equation is a constant, if you increase <code>v</code>, <code>1/v</code> becomes smaller, <code>1/u</code> increases, then <code>u</code> actually drops. That means, <code>v</code> is in inverse proportion to <code>u</code>.</p>
+<p>Back to the plant, if we want to move the focus point closer, decreasing <code>u</code> require us to increase <code>v</code>, so we need to rotate the lens base out. Voila!</p>
+<h2 id="Tune-It"><a href="#Tune-It" class="headerlink" title="Tune It!"></a>Tune It!</h2><p>Let’s start the experiment.</p>
+<p>To facilitate the tuning process, I’d suggest rotating it clockwise to the end (minimize the <code>v</code>), then rotate it back (anti-clockwise) gradually to increase <code>v</code>. For two reasons:</p>
+<ul>
+<li>If we start by rotating anti-clockwise, the lens base can pop out, it’s not easy to put it back</li>
+<li>Use the minimum <code>v</code> as a benchmark, keep each rotation step small, so that we won’t skip the best position</li>
+</ul>
+<p>After each small rotation, take a photo to check what’s the current focus, you can use the following command.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Use a different file name so that you can keep the history.</span></span><br><span class="line">raspistill -o test.jpg</span><br></pre></td></tr></table></figure>
+<p>Here’s what I tried:</p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_tuning1.jpg" alt="Raspberry Pi Camera Tuning"></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_tuning2.jpg" alt="Raspberry Pi Camera Tuning"></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_tuning3.jpg" alt="Raspberry Pi Camera Tuning"></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_tuning4.jpg" alt="Raspberry Pi Camera Tuning"></p>
+<p><img src="https://raw.githubusercontent.com/0x333333/blog_img/master/z_picamera_tuning5.jpg" alt="Raspberry Pi Camera Tuning"></p>
+<p>Yay! The text on the keyboard becomes clear gradually after a few steps.</p>
+<h2 id="Pay-Attention"><a href="#Pay-Attention" class="headerlink" title="Pay Attention"></a>Pay Attention</h2><ul>
+<li>Be gentle, don’t screw it too hard</li>
+<li>If you are using a tool like knife, be careful not to hurt yourself</li>
+<li>When you screw anti-clockwise, don’t rotate too far, the lens base will pop out, it’s not that easy to put it back</li>
+<li>Some people suggest to do it with the camera unplugged, well, I did it with it connected, so <strong>maybe</strong> it’s OK</li>
+</ul>
+<p><strong><em>Special thanks to Dr. Hu’s equation, that’s the basis of the experiment.</em></strong></p>
+</div></article></div></section><footer><div class="paginator"><a href="/2021/05/20/bye-google/" class="prev">上一篇</a><a href="/2020/03/14/rvo-static-variable/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2020/05/28/picamera-adjust-focus/';
+var disqus_title = 'Adjust Raspberry Pi camera focus to fix the blurry issue';
+var disqus_url = 'http://zpjiang.me/2020/05/28/picamera-adjust-focus/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>

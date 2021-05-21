@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>Analysis on Malicious SSH Login Attempts | Ox333333</title><meta name="description" content="This blog gives an example of how to diagnosis a VM hacking attack by checking login session log."><meta name="keywords" content="Azure, DDoS, Network Security, Linux, Log, VM, Hacking"><meta name="subtitle" content="In Pursuit of Absolute Simplicity"><meta name="author" content="Ox333333"><meta name="google-site-verification" content="cvPAyZ-ZCL95oXwVejN2W-cxTBfUemEGQOnHKDEQ8Dk"><meta name="msvalidate.01" content="31FA25C5697C3CA088656A9B63A9013F"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:site_name" content="Ox333333"><meta name="og:type" content="website"><meta name="og:title" content="Analysis on Malicious SSH Login Attempts"><meta name="og:descricption" content="This blog gives an example of how to diagnosis a VM hacking attack by checking login session log."><meta name="og:url"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Analysis on Malicious SSH Login Attempts"><meta name="twitter:description" content="This blog gives an example of how to diagnosis a VM hacking attack by checking login session log."><meta name="twitter:site" content="@Ox333333"><meta name="twitter:url"><link rel="canonical"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://zpjiang.me/atom.xml" title="Ox333333"><meta name="generator" content="Hexo 5.4.0"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="https://blog.1pixel.cc" target="_blank" class="nav-list-link">TRAVEL</a></li><li class="nav-list-item"><a href="https://1pixel.cc" target="_blank" class="nav-list-link">PHOTOGRAPHY</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Analysis on Malicious SSH Login Attempts</h1><div class="post-info">Oct 27, 2016</div><div class="post-content"><p>Last week when I tried to login to a remote test server, SSH timeout exception occured quite frequently. I didn’t pay much attention untils an internal monitoring system detected there were some potential malicious activities in that server.</p>
+<p>I noticed that when I logined into the server, SSH told me that there were about 2k failed SSH login attempts before this success one.</p>
+<p>Someone is hacking the server.</p>
+<span id="more"></span>
+<p>I went to <code>/var/log</code> and checked the login history:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep -i fail /var/<span class="built_in">log</span>/secure | less</span><br><span class="line">grep -i fail /var/<span class="built_in">log</span>/secure | wc -l</span><br></pre></td></tr></table></figure>
+<p>Holy, there were about 40k failed attempts within last two days. In order to get more details, I need to figure out where did these requests come from and what did they do.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This script generates the list of users</span></span><br><span class="line"><span class="comment"># that was used by these malicious login attempts.</span></span><br><span class="line"><span class="comment"># Results are printed in a reverse order by frequency.</span></span><br><span class="line">grep -i <span class="string">&quot;Failed password for invalid user&quot;</span> /var/<span class="built_in">log</span>/secure |</span><br><span class="line">  cut -d <span class="string">&quot; &quot;</span> -f 11 |</span><br><span class="line">  uniq |</span><br><span class="line">  <span class="keyword">while</span> <span class="built_in">read</span> name</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">    grep <span class="string">&quot;<span class="variable">$name</span>&quot;</span> /var/<span class="built_in">log</span>/secure | wc -l | tr -d <span class="string">&quot;\n&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot; <span class="variable">$name</span>&quot;</span></span><br><span class="line">  <span class="keyword">done</span> | sort -n -r | uniq</span><br><span class="line"></span><br><span class="line"><span class="comment"># This script generates the list of IPs</span></span><br><span class="line"><span class="comment"># that was used by these malicious login attempts.</span></span><br><span class="line"><span class="comment"># Results are printed in a reverse order by frequency.</span></span><br><span class="line">grep -i <span class="string">&quot;Failed password&quot;</span> /var/<span class="built_in">log</span>/secure |</span><br><span class="line">  cut -d <span class="string">&quot; &quot;</span> -f 13 |</span><br><span class="line">  uniq |</span><br><span class="line">  <span class="keyword">while</span> <span class="built_in">read</span> ip</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">    grep <span class="string">&quot;<span class="variable">$ip</span>&quot;</span> /var/<span class="built_in">log</span>/secure | wc -l | tr -d <span class="string">&quot;\n&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot; <span class="variable">$ip</span>&quot;</span></span><br><span class="line">  <span class="keyword">done</span> | sort -n -r | uniq</span><br></pre></td></tr></table></figure>
+<p>Here is a list of top users,</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Amount</th>
+<th style="text-align:center">Username</th>
+<th style="text-align:center">Amount</th>
+<th style="text-align:center">IPs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">75381</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2913</td>
+<td style="text-align:center">59.56.110.209</td>
+</tr>
+<tr>
+<td style="text-align:center">53914</td>
+<td style="text-align:center">user</td>
+<td style="text-align:center">2501</td>
+<td style="text-align:center">59.14.66.191</td>
+</tr>
+<tr>
+<td style="text-align:center">12097</td>
+<td style="text-align:center">log</td>
+<td style="text-align:center">383</td>
+<td style="text-align:center">82.235.192.233</td>
+</tr>
+<tr>
+<td style="text-align:center">2313</td>
+<td style="text-align:center">unknown</td>
+<td style="text-align:center">198</td>
+<td style="text-align:center">61.188.189.7</td>
+</tr>
+<tr>
+<td style="text-align:center">1156</td>
+<td style="text-align:center">service</td>
+<td style="text-align:center">163</td>
+<td style="text-align:center">123.31.34.215</td>
+</tr>
+<tr>
+<td style="text-align:center">570</td>
+<td style="text-align:center">admin</td>
+<td style="text-align:center">122</td>
+<td style="text-align:center">123.16.141.221</td>
+</tr>
+<tr>
+<td style="text-align:center">289</td>
+<td style="text-align:center">linux</td>
+<td style="text-align:center">115</td>
+<td style="text-align:center">198.167.140.168</td>
+</tr>
+<tr>
+<td style="text-align:center">235</td>
+<td style="text-align:center">test</td>
+<td style="text-align:center">91</td>
+<td style="text-align:center">202.96.30.210</td>
+</tr>
+<tr>
+<td style="text-align:center">232</td>
+<td style="text-align:center">app</td>
+<td style="text-align:center">90</td>
+<td style="text-align:center">91.224.160.184</td>
+</tr>
+<tr>
+<td style="text-align:center">205</td>
+<td style="text-align:center">oracle</td>
+<td style="text-align:center">77</td>
+<td style="text-align:center">222.215.118.68</td>
+</tr>
+<tr>
+<td style="text-align:center">179</td>
+<td style="text-align:center">ubnt</td>
+<td style="text-align:center">72</td>
+<td style="text-align:center">195.225.58.195</td>
+</tr>
+<tr>
+<td style="text-align:center">166</td>
+<td style="text-align:center">pos</td>
+<td style="text-align:center">64</td>
+<td style="text-align:center">179.43.141.216</td>
+</tr>
+<tr>
+<td style="text-align:center">153</td>
+<td style="text-align:center">postgres</td>
+<td style="text-align:center">57</td>
+<td style="text-align:center">179.43.141.225</td>
+</tr>
+<tr>
+<td style="text-align:center">148</td>
+<td style="text-align:center">temp</td>
+<td style="text-align:center">50</td>
+<td style="text-align:center">123.31.34.44</td>
+</tr>
+<tr>
+<td style="text-align:center">146</td>
+<td style="text-align:center">monitor</td>
+<td style="text-align:center">39</td>
+<td style="text-align:center">183.131.83.224</td>
+</tr>
+<tr>
+<td style="text-align:center">146</td>
+<td style="text-align:center">cisco</td>
+<td style="text-align:center">37</td>
+<td style="text-align:center">185.128.41.117</td>
+</tr>
+<tr>
+<td style="text-align:center">143</td>
+<td style="text-align:center">ziyuan</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">163.172.16.102</td>
+</tr>
+<tr>
+<td style="text-align:center">143</td>
+<td style="text-align:center">superman</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">171.251.76.109</td>
+</tr>
+<tr>
+<td style="text-align:center">143</td>
+<td style="text-align:center">sever</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">45.63.61.171</td>
+</tr>
+<tr>
+<td style="text-align:center">143</td>
+<td style="text-align:center">root123dmk.com</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">202.196.0.243</td>
+</tr>
+<tr>
+<td style="text-align:center">143</td>
+<td style="text-align:center">linuxer</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">118.193.214.29</td>
+</tr>
+</tbody>
+</table>
+<p>Like these strange usernames, I can not get any useful information from IP distribution, most of them point to proxy server. The only thing that I can do is to block these frequent IPs to reduce resource cost by using <code>fail2ban</code>.</p>
+</div></article></div></section><footer><div class="paginator"><a href="/2016/11/03/untitled/" class="prev">上一篇</a><a href="/2016/10/26/SSH-to-Virtualbox-VM-from-Host-PC/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'zhipeng';
+var disqus_identifier = '2016/10/27/Botnet-Affaction-Analysis/';
+var disqus_title = 'Analysis on Malicious SSH Login Attempts';
+var disqus_url = 'http://zpjiang.me/2016/10/27/Botnet-Affaction-Analysis/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//zhipeng.disqus.com/count.js" async></script><div class="copyright"><p>2013 - 2021 | <a href="http://zpjiang.me">Ox333333</a> <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/3.0/">| CC BY-NC-SA</a></p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script async data-ad-client="ca-pub-9383149074803575" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-47515905-1",'auto');ga('send','pageview');</script></body></html>
